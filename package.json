@@ -1,0 +1,23 @@
+{
+  "name": "wayfu-dom",
+  "version": "0.0.1",
+  "description": "WayFu DOM Manipulator",
+  "main": "/src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wayfu-id/wayfu-dom.git"
+  },
+  "keywords": [
+    "WayFu",
+    "DOM-Manipulator"
+  ],
+  "author": "WayFu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wayfu-id/wayfu-dom/issues"
+  },
+  "homepage": "https://github.com/wayfu-id/wayfu-dom#readme"
+}
