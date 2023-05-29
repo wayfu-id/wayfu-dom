@@ -2,15 +2,11 @@
   "name": "@wayfu/wayfu-dom",
   "version": "0.0.4-alpha.0",
   "description": "WayFu DOM Manipulator",
-  "main": "/index.js",
-  "module": "/index.cjs",
-  "types": "/index.d.ts",
+  "main": "src/index.js",
+  "module": "src/index.cjs",
+  "types": "src/index.d.ts",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./index.js"
-    },
     "./src": {
       "types": "./src/DOM.d.ts",
       "import": "./src/DOM.js"

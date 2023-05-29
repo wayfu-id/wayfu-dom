@@ -1,4 +1,4 @@
-import DOM from "../DOM";
+import DOM from "..";
 import { elemenOptions, svgElemenOptions, elementStyles } from "../../types";
 
 /**
