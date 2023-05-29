@@ -406,5 +406,5 @@ export default class DOM extends Base {
         return DOM.create(query);
     }
 
-    static utils = { toCamel, toKebab };
+    // static utils = { toCamel, toKebab };
 }

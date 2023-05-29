@@ -102,10 +102,10 @@ export default class DOM extends Base<HTMLElement>{
     /** Static method for creating and inserting new stylesheet into active page */
     static addStyle(css: String, opt?: elemenOptions): DOM;
 
-    static utils: {
-        /** Convert `snake_case` or `kebab-case` to `camelCase` string */
-        toCamel: (string: string) => string,
-        /** Convert `camelCase` to `kebab-case` string */
-        toKebab: (string: string) => string,
-    };
+    // static utils: {
+    //     /** Convert `snake_case` or `kebab-case` to `camelCase` string */
+    //     toCamel: (string: string) => string,
+    //     /** Convert `camelCase` to `kebab-case` string */
+    //     toKebab: (string: string) => string,
+    // };
 }
