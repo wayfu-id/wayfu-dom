@@ -1,11 +1,13 @@
 {
   "name": "@wayfu/wayfu-dom",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "WayFu DOM Manipulator",
   "main": "/index.js",
   "types": "/types.d.ts",
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "webpack --config webpack.config.js --mode=development -w",
     "build": "webpack --config webpack.config.js --mode=production",
