@@ -3,7 +3,8 @@
   "version": "0.0.3",
   "description": "WayFu DOM Manipulator",
   "main": "/index.js",
-  "types": "/types.d.ts",
+  "module": "/index.cjs",
+  "types": "/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
