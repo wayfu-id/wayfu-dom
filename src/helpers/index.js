@@ -1,4 +1,4 @@
-import DOM from "../DOM.js";
+import DOM from "../index.js";
 import { toKebab } from "../utils/index.js";
 
 /**
