@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### 0.0.1 (2023-05-30)
 
+### 0.0.1 (2023-05-30)
+
 ### 0.0.1 (2023-05-29)
 
 ### [0.0.4-alpha.1](https://github.com/wayfu-id/wayfu-dom/compare/v0.0.4-alpha.0...v0.0.4-alpha.1) (2023-05-29)
