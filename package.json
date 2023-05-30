@@ -1,18 +1,10 @@
 {
   "name": "@wayfu/wayfu-dom",
-  "version": "0.0.4-alpha.1",
+  "version": "0.0.1",
   "description": "WayFu DOM Manipulator",
-  "main": "src/index.js",
-  "module": "src/index.cjs",
-  "types": "src/index.d.ts",
+  "main": "index.js",
+  "types": "types.d.ts",
   "type": "module",
-  "exports": {
-    "./src": {
-      "types": "./src/DOM.d.ts",
-      "import": "./src/DOM.js"
-    },
-    "./package.json": "./package.json"
-  },
   "scripts": {
     "dev": "webpack --config webpack.config.js --mode=development -w",
     "build": "webpack --config webpack.config.js --mode=production",
