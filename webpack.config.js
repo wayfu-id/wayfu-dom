@@ -1,11 +1,11 @@
-import path from "path";
+import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const dir = dirname(fileURLToPath(import.meta.url));
 
 export default {
-    entry: "./src/index.js",
+    entry: "./index.js",
     output: {
-        path: path.resolve(__dirname, "./dist"),
+        path: resolve(dir, "./dist"),
         filename: "wayfu-dom.min.js",
         library: {
             name: "DOM",
@@ -13,8 +13,5 @@ export default {
             export: "default",
         },
     },
-    // experiments: {
-    //     outputModule: true,
-    // },
     devtool: "source-map",
 };

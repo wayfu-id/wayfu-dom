@@ -1,5 +1,5 @@
 /**
- * @typedef {import("../../types").kindOfNode} kindOfNode
+ * @typedef {import("../types").kindOfNode} kindOfNode
  */
 
 const rgx = {

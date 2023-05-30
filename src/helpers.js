@@ -1,11 +1,11 @@
 import DOM from "../index.js";
-import { toKebab } from "../utils/index.js";
+import { toKebab } from "./utils.js";
 
 /**
- * @typedef {import("../../types").elemenOptions} elemenOptions
- * @typedef {import("../../types").kindOfNode} kindOfNode
- * @typedef {import("../../types").listElementOptions} listElementOptions
- * @typedef {import("../../types").svgElemenOptions} svgElemenOptions
+ * @typedef {import("../types.js").elemenOptions} elemenOptions
+ * @typedef {import("../types.js").kindOfNode} kindOfNode
+ * @typedef {import("../types.js").listElementOptions} listElementOptions
+ * @typedef {import("../types.js").svgElemenOptions} svgElemenOptions
  */
 
 /**
