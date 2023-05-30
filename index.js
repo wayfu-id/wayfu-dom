@@ -3,11 +3,11 @@ import { toCamel, toKebab, isNode } from "./src/utils.js";
 import { createElement, getElement, setProperties, setStyles } from "./src/helpers.js";
 
 /**
- * @typedef {import("../types.js").elemenOptions} elemenOptions
- * @typedef {import("../types.js").kindOfNode} kindOfNode
- * @typedef {import("../types.js").listElementOptions} listElementOptions
- * @typedef {import("../types.js").svgElementDetails} svgElementDetails
- * @typedef {import("../types.js").svgElemenOptions} svgElemenOptions
+ * @typedef {import("./types.js").elemenOptions} elemenOptions
+ * @typedef {import("./types.js").kindOfNode} kindOfNode
+ * @typedef {import("./types.js").listElementOptions} listElementOptions
+ * @typedef {import("./types.js").svgElementDetails} svgElementDetails
+ * @typedef {import("./types.js").svgElemenOptions} svgElemenOptions
  */
 /**
  * Just a DOM Class using extended custom Array
@@ -158,6 +158,8 @@ export default class DOM extends Base {
             return this;
         }
 
+        if (this.isEmpty) return this;
+
         const [isStyleKey, props] = ((k, v) => {
             let keys = Object.getOwnPropertyNames(this.first.style);
             return [keys.some((e) => e === k), { [k]: v }];
@@ -299,7 +301,7 @@ export default class DOM extends Base {
 
     /**
      * Static method for creating new DOM instance with new Element(s)
-     * @param {Base<listElementOptions|String>} items
+     * @param {Array<listElementOptions|String>} items
      * @param {"ol"|"ul"} type list type
      * @param {elemenOptions} opt
      * @returns
@@ -309,7 +311,7 @@ export default class DOM extends Base {
         if (Array.isArray(items)) {
             items.forEach((e) => {
                 if (typeof e === "object") {
-                    let { title, content } = e,
+                    let { title, type, content } = e,
                         item = DOM.create("li", { html: title });
 
                     if (Array.isArray(content)) {

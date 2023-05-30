@@ -12,7 +12,7 @@ const rgx = {
  * @param {String} string
  * @returns
  */
-const toCamel = (string) => {
+function toCamel(string) {
     let { snaKebab } = rgx;
     if (!snaKebab.test(string)) return string;
 
@@ -20,33 +20,33 @@ const toCamel = (string) => {
     return string.replace(snaKebab, (m) => {
         return m.toUpperCase().replace("-", "").replace("_", "");
     });
-};
+}
 
 /**
  * Convert `camelCase` to `kebab-case` string
  * @param {String} string
  * @returns
  */
-const toKebab = (string) => {
+function toKebab(string) {
     let { camelCase } = rgx;
     if (!camelCase.test(string)) return string;
 
     return string.replace(camelCase, (m) => {
         return `-${m.toLocaleLowerCase()}`;
     });
-};
+}
 
 /**
  * Check the given query is belongs to Node type or not
  * @param {kindOfNode | Object} query
  * @returns
  */
-const isNode = (query) => {
+function isNode(query) {
     return (
         query instanceof Document ||
         query instanceof Window ||
         query instanceof HTMLElement
     );
-};
+}
 
 export { toCamel, toKebab, isNode };

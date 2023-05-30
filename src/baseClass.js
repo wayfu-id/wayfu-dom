@@ -83,14 +83,4 @@ export default class Base extends Array {
         let arr = string.split(delimiter);
         return new MyArray(...arr);
     }
-
-    /**
-     * Reconstruct `Array.from` to create new MyArray
-     * From `IterableObject`.
-     * @param {Iterable<any> | ArrayLike<any>} arrayLike
-     * @returns {MyArray}
-     */
-    static create(arrayLike) {
-        return new MyArray(...Array.from(arrayLike));
-    }
 }
