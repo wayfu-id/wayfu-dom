@@ -3,13 +3,29 @@
   "version": "0.0.1",
   "description": "WayFu DOM Manipulator",
   "main": "index.js",
-  "types": "types.d.ts",
+  "types": "index.d.ts",
   "type": "module",
   "scripts": {
     "dev": "webpack --config webpack.config.js --mode=development -w",
     "build": "webpack --config webpack.config.js --mode=production",
     "release": "standard-version"
   },
+  "exports": {
+    ".": {
+      "browser": {
+        "default": "./dist/wayfu-dom.min.js"
+      },
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    }
+  },
+  "files": [
+    "types.d.ts",
+    "index.*",
+    "dist",
+    "src",
+    "package.json"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wayfu-id/wayfu-dom.git"
