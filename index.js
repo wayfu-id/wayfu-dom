@@ -1,5 +1,5 @@
 import Base from "./src/baseClass.js";
-import { toCamel, toKebab, isNode } from "./src/utils.js";
+import { toCamel, isNode } from "./src/utils.js";
 import { createElement, getElement, setProperties, setStyles } from "./src/helpers.js";
 
 /**
@@ -407,6 +407,4 @@ export default class DOM extends Base {
 
         return DOM.create(query);
     }
-
-    static utils = { toCamel, toKebab };
 }
