@@ -1,6 +1,6 @@
 {
   "name": "@wayfu/wayfu-dom",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "WayFu DOM Manipulator",
   "main": "index.js",
   "types": "index.d.ts",
@@ -45,7 +45,7 @@
   },
   "standard-version": {
     "scripts": {
-      "postbump": "npm run build && git commit -m \"chore(build): build & bump new version\""
+      "postbump": "npm run build && git add . && git commit -m \"chore(build): build & bump new version\""
     }
   },
   "commitizen": {
