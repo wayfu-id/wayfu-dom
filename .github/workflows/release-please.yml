@@ -17,7 +17,7 @@ jobs:
               id: release
               with:
                   release-type: node
-                  package-name: "@wayfu/wayfu-dom"
+                  package-name: release-please-action
             - uses: actions/checkout@v2
               if: ${{ steps.release.outputs.release_created }}
             - uses: actions/setup-node@v1
