@@ -7,8 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "webpack --config webpack.config.js --mode=development -w",
-    "build": "webpack --config webpack.config.js --mode=production",
-    "release": "standard-version"
+    "build": "webpack --config webpack.config.js --mode=production"
   },
   "exports": {
     ".": {
@@ -45,7 +44,7 @@
   },
   "standard-version": {
     "scripts": {
-      "postbump": "npm run build && git add ./*.js dist/* && git commit -m \"chore(build): build & bump new version\""
+      "postbump": "npm run build && git commit -m \"chore(build): build & bump new version\""
     }
   },
   "commitizen": {
