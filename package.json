@@ -30,9 +30,6 @@
     "type": "git",
     "url": "git+https://github.com/wayfu-id/wayfu-dom.git"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "keywords": [
     "WayFu",
     "DOM-Manipulator"
