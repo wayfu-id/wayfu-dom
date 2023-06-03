@@ -95,7 +95,9 @@ let paragraph = DOM.create("p", {text: "Hello World!"});
 // This will return a new DOM class object with 1 paragraph element that contains `Hello World!` text
 ```
 #### Call `.create()` from DOM object
-You can call `.create()` method as DOM prototype method from DOM created object too. If you do that, it will automatically `append` the new element into the previous DOM element, and it will return the new DOM object with new created element. For example:
+You can call `.create()` method as DOM prototype method from DOM created object too. This method only accept 1 parameter, that is `elemenOptions` object.
+
+If you call this method, it will automatically `append` the new element into the previous DOM element, and it will return the new DOM object with new created element. For example:
 ```js
 /** Let's find our container */
 let container = DOM.get("div.container");
@@ -108,6 +110,8 @@ let cont-item = container.create({tag: "div", classid: "cont-item"});
  * And the `cont-item` value is new DOM object with `div.cont-item` element.
  */
 ```
+> Different between `.create()` and `.insert()` is:
+> `.create()` will return the new DOM with new created element, instead of return the main DOM object like `.insert()` do.
 ### 3. Modifying Element(s)
 You can modify your element(s) easily. using built-in method.
 There are some method that can be used to modifying DOM element.
