@@ -35,6 +35,8 @@ If you wish to skip the modular build and NOT use npm you can use the vanilla bu
 
 ### 1. Getting Element(s)
 This can be used to getting one or multiple elements at the same time.
+#### Getting from global document
+You can using `DOM.get(query:string)` static method to get element from global document.
 
 ```js
 /** Get an element(s) and then
@@ -48,7 +50,16 @@ DOM.get("query");
 */
 let element = DOM.get("query");
 ```
+#### Getting child elemement
+Of course you can find and get child element using query. For this you need to set the parent element using `DOM.get(query:string)` static method. Then, you can use `.get(query:string)` method from your DOM object. For example:
+```js
+/** Let's find our div container */
+let container = DOM.get("div.container");
 
+/** Now, let's find container item from our container parent */
+let cont-items = container.get(".cont-item");
+/** This will return new DOM object with matched element, not modifying or overriding the parent DOM object.
+```
 ### 2. Creating Element(s):
 You can create an element(s) easily using `DOM.create()` method.
 ```ts
@@ -83,7 +94,20 @@ let link = DOM.create("a"); // of cource you can also store it into a variable.
 let paragraph = DOM.create("p", {text: "Hello World!"});
 // This will return a new DOM class object with 1 paragraph element that contains `Hello World!` text
 ```
+#### Call `.create()` from DOM object
+You can call `.create()` method as DOM prototype method from DOM created object too. If you do that, it will automatically `append` the new element into the previous DOM element, and it will return the new DOM object with new created element. For example:
+```js
+/** Let's find our container */
+let container = DOM.get("div.container");
 
+/** Now, let's create new element inside the container */
+let cont-item = container.create({tag: "div", classid: "cont-item"});
+
+/**
+ * The container element now has cont-item child;
+ * And the `cont-item` value is new DOM object with `div.cont-item` element.
+ */
+```
 ### 3. Modifying Element(s)
 You can modify your element(s) easily. using built-in method.
 There are some method that can be used to modifying DOM element.
