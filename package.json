@@ -11,13 +11,15 @@
     "release": "standard-version"
   },
   "exports": {
-    ".": {
-      "browser": {
-        "default": "./dist/wayfu-dom.min.js"
-      },
+    "node": {
+      "module": "./index.js",
       "types": "./index.d.ts",
-      "import": "./index.js"
-    }
+      "default": "./index.js"
+    },
+    "browser": {
+      "default": "./dist/wayfu-dom.min.js"
+    },
+    "default": "./index.js"
   },
   "files": [
     "types.d.ts",
@@ -58,6 +60,7 @@
   },
   "devDependencies": {
     "husky": "^8.0.3",
+    "terser-webpack-plugin": "^5.3.9",
     "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1"
   }
