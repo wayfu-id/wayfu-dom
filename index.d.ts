@@ -7,7 +7,7 @@ import {
     svgElementDetails,
 } from "./types";
 
-declare class DOM extends Base<HTMLElement>{
+export default class DOM extends Base<HTMLElement>{
     /** Create new Empty DOM Object */
     constructor();
     /** Create new DOM with matched Element(s) from query */
@@ -104,5 +104,3 @@ declare class DOM extends Base<HTMLElement>{
     /** Static method for creating and inserting new stylesheet into active page */
     static addStyle(css: string, opt?: elemenOptions): DOM;
 }
-
-export default DOM;
