@@ -10,17 +10,6 @@
     "build": "webpack --config webpack.config.js --mode=production",
     "release": "standard-version"
   },
-  "exports": {
-    "node": {
-      "module": "./index.js",
-      "types": "./index.d.ts",
-      "default": "./index.js"
-    },
-    "browser": {
-      "default": "./dist/wayfu-dom.min.js"
-    },
-    "default": "./index.js"
-  },
   "files": [
     "types.d.ts",
     "index.*",
