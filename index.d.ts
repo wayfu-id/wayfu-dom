@@ -1,12 +1,9 @@
 import Base from "./src/baseClass";
+import { kindOfNode, elemenOptions, listElementOptions, svgElementDetails, } from "./types";
 
-import {
-    kindOfNode,
-    elemenOptions,
-    listElementOptions,
-    svgElementDetails,
-} from "./types";
-
+/**
+ * Just a DOM Class using extended custom Array
+ */
 export default class DOM extends Base<HTMLElement>{
     /** Create new Empty DOM Object */
     constructor();
@@ -104,3 +101,6 @@ export default class DOM extends Base<HTMLElement>{
     /** Static method for creating and inserting new stylesheet into active page */
     static addStyle(css: string, opt?: elemenOptions): DOM;
 }
+
+export { kindOfNode, elemenOptions, listElementOptions, svgElementDetails };
+export { svgElemenOptions, elementStyles } from "./types"
