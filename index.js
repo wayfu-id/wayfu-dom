@@ -275,6 +275,21 @@ export default class DOM extends Base {
     }
 
     /**
+     * Added since `v0.2.x`.
+     *
+     * Dispatch Event manualy to the current event
+     * @param {Event} event
+     * @returns
+     */
+    dispatch(event) {
+        if (this.first) {
+            this.first.dispatchEvent(event);
+        }
+
+        return this;
+    }
+
+    /**
      * Static method for creating new DOM instance with new Element(s)
      * @param {String | DOM | elemenOptions | elemenOptions[]} tag
      * @param {elemenOptions} opt

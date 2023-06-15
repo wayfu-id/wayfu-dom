@@ -79,6 +79,10 @@ export default class DOM extends Base<HTMLElement>{
     /** Add event listener to an element */
     onEvent(type: string, listener: EventListener, bubbles?: boolean): this;
 
+    /** Added since `v0.2.x`.*/
+    /** Dispatch Event manualy to the current event */
+    dispatch(event: Event): this;
+
     /** Static method for creating new DOM instance with new Element(s) */
     static create(tag: string, opt: elemenOptions): DOM;
     static create(tag: elemenOptions, opt?: elemenOptions): DOM;
