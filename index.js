@@ -30,7 +30,7 @@ export default class DOM extends Base {
      * Create new DOM with created Element(s) from given properties
      * @overload
      * @param {(elemenOptions | elemenOptions[])} query
-     * @param {true} create
+     * @param {boolean} [true] create
      */
     constructor(query, create) {
         super();
@@ -169,9 +169,14 @@ export default class DOM extends Base {
     }
 
     /**
-     * Remove current element or an element from current element
-     * @param {String | kindOfNode | DOM | null} query
-     * @returns
+     * Remove current element from body
+     * @overload
+     * @returns {DOM}
+     */ /**
+     * Remove given element from current element
+     * @overload
+     * @param {string | kindOfNode | DOM} query
+     * @returns {DOM}
      */
     remove(query) {
         const getEle = (query) => DOM.get(query).first;

@@ -54,7 +54,9 @@ export default class DOM extends Base<HTMLElement>{
     /** Set a bunch of propertes. Can be attributes or stylesheet */
     // sets(props: {[k:string]: string | Number | Boolean}): this;
 
-    /** Remove current element or an element from current element */
+    /** Remove current element from body */
+    remove(): this;
+    /** Remove given element from current element */
     remove(query?: string | kindOfNode | DOM): this;
 
     /** 
