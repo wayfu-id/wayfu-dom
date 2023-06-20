@@ -141,7 +141,8 @@ function setProperties(props, dom) {
                             node.setAttribute(name, props[name]);
                     }
                 } else {
-                    node.setAttributeNS(null, toKebab(name), props[name]);
+                    let key = name === "viewBox" ? name : toKebab(name);
+                    node.setAttributeNS(null, key, props[name]);
                 }
             }
         }
