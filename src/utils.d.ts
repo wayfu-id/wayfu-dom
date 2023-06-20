@@ -1,5 +1,10 @@
 import { kindOfNode } from "../types";
 
+/** Convert string to array of string */
+export function strToArr(input: string | string[]): string[];
+/** Convert string to array of string with custom delimiter */
+export function strToArr(input: string | string[], delimiter: string): string[];
+
 /** Convert `snake_case` or `kebab-case` to `camelCase` string */
 export function toCamel(string: String): string;
 

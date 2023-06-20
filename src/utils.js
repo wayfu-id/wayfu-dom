@@ -8,6 +8,20 @@ const rgx = {
 };
 
 /**
+ * Convert string to array of string
+ * @param {string | string[]} input
+ * @param {string=} delimiter by default using space
+ * @returns
+ */
+function strToArr(input, delimiter = " ") {
+    return Array.isArray(input)
+        ? input
+        : typeof input === "string"
+        ? input.split(delimiter)
+        : [];
+}
+
+/**
  * Convert `snake_case` or `kebab-case` to `camelCase` string
  * @param {String} string
  * @returns
@@ -49,4 +63,4 @@ function isNode(query) {
     );
 }
 
-export { toCamel, toKebab, isNode };
+export { toCamel, toKebab, isNode, strToArr };
