@@ -10,6 +10,16 @@
     "build": "webpack --config webpack.config.js --mode=production",
     "release": "standard-version"
   },
+  "exports": {
+    "." : "./index.js",
+    "./utils" : "./src/utils.js",
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "utils": ["./src/utils.d.ts"]
+    }
+  },
   "files": [
     "types.d.ts",
     "index.*",
