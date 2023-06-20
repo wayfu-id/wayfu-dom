@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.8...v0.1.9) (2023-06-20)
+
+
+### Bug Fixes
+
+* ignore kebab style only for viewBox attribute ([236cd39](https://github.com/wayfu-id/wayfu-dom/commit/236cd3937671fc15238b522b00eb3013ba92baf1))
+
 ### [0.1.8](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.7...v0.1.8) (2023-06-15)
 
 
