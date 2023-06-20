@@ -1,5 +1,5 @@
 import DOM from "../index.js";
-import { toKebab } from "./utils.js";
+import { toKebab, strToArr } from "./utils.js";
 
 /**
  * @typedef {import("../types.js").elemenOptions} elemenOptions
@@ -82,16 +82,24 @@ function setProperties(props, dom) {
                             break;
                         case "class":
                         case "classid":
-                            if (typeof props[name] === "array") {
-                                for (let cls of props[name]) {
+                        case "addClass":
+                            let val = strToArr(props[name]);
+
+                            if (val.length) {
+                                for (let cls of val) {
                                     node.classList.add(cls);
                                 }
-                            } else if (typeof props[name] === "string") {
-                                node.className = props[name];
                             }
-                            break;
-                        case "addClass":
-                            node.classList.add(props[name]);
+                            // if (typeof val === "array") {
+                            //     for (let cls of props[name]) {
+                            //         node.classList.add(cls);
+                            //     }
+                            // } else if (typeof props[name] === "string") {
+                            //     node.className = props[name];
+                            // }
+                            // break;
+                            // case "addClass":
+                            // node.classList.add(props[name]);
                             break;
                         case "removeClass":
                             node.classList.remove(props[name]);
