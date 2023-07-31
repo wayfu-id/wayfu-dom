@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.9...v0.1.10) (2023-07-31)
+
+
+### Bug Fixes
+
+* implement private constructor, prevent instantiation DOM class ([8c0fa80](https://github.com/wayfu-id/wayfu-dom/commit/8c0fa804b82c648e07ea7bb0d74dbca0fd01f774))
+
 ### [0.1.9](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.8...v0.1.9) (2023-06-20)
 
 
