@@ -6,13 +6,13 @@ import { kindOfNode, elemenOptions, listElementOptions, svgElementDetails, } fro
  */
 export default class DOM extends Base<HTMLElement>{
     /** Create new Empty DOM Object */
-    constructor();
+    private constructor();
     /** Create new DOM with matched Element(s) from query */
-    constructor(query: string | kindOfNode | NodeList);
+    private constructor(query: string | kindOfNode | NodeList);
     /** Return the current DOM */
-    constructor(query: DOM);
+    private constructor(query: DOM);
     /** Create new DOM with created Element(s) from given properties */
-    constructor(query: elemenOptions | elemenOptions[], create: true);
+    private constructor(query: elemenOptions | elemenOptions[], create: true);
 
     /** Get current element childNodes */
     get childNodes(): NodeListOf<ChildNode> | undefined;
