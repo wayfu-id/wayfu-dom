@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.10...v0.1.11) (2023-10-17)
+
+
+### Bug Fixes
+
+* **docs:** Better documentation ([f11db82](https://github.com/wayfu-id/wayfu-dom/commit/f11db82a683bf4e2508dc161da458e32d288fdca))
+
 ### [0.1.10](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.9...v0.1.10) (2023-07-31)
 
 
