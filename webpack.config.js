@@ -28,6 +28,12 @@ export default {
     optimization: {
         minimizer: [
             new TerserPlugin({
+                terserOptions: {
+                    compress: {
+                        keep_classnames: false,
+                        keep_fnames: true,
+                    },
+                },
                 extractComments: false,
             }),
         ],
