@@ -2,16 +2,17 @@ import DOM from "../index.js";
 import { toKebab, strToArr } from "./utils.js";
 
 /**
- * @typedef {import("../types.js").elemenOptions} elemenOptions
- * @typedef {import("../types.js").kindOfNode} kindOfNode
- * @typedef {import("../types.js").listElementOptions} listElementOptions
- * @typedef {import("../types.js").svgElemenOptions} svgElemenOptions
+ * @typedef {import("../index").elementOptions} elementOptions
+ * @typedef {import("../index").elementStyles} elementStyles
+ * @typedef {import("../index").kindOfNode} kindOfNode
+ * @typedef {import("../index").listElementOptions} listElementOptions
+ * @typedef {import("../index").svgElemenOptions} svgElemenOptions
  */
 
 /**
  * Actual method for creating Element(s)
  * and Collect it into DOM Object
- * @param {elemenOptions | svgElemenOptions} props
+ * @param {elementOptions | svgElemenOptions} props
  * @param {DOM?} dom_
  * @returns
  */
@@ -58,7 +59,7 @@ function getElement(query, dom_) {
 
 /**
  * Set properties for current HTML Element
- * @param {elemenOptions} props
+ * @param {elementOptions} props
  * @param {DOM} dom
  * @returns
  */
@@ -90,16 +91,6 @@ function setProperties(props, dom) {
                                     node.classList.add(cls);
                                 }
                             }
-                            // if (typeof val === "array") {
-                            //     for (let cls of props[name]) {
-                            //         node.classList.add(cls);
-                            //     }
-                            // } else if (typeof props[name] === "string") {
-                            //     node.className = props[name];
-                            // }
-                            // break;
-                            // case "addClass":
-                            // node.classList.add(props[name]);
                             break;
                         case "removeClass":
                             node.classList.remove(props[name]);

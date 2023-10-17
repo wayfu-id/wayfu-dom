@@ -3,11 +3,12 @@ import { toCamel, isNode } from "./src/utils.js";
 import { createElement, getElement, setProperties, setStyles } from "./src/helpers.js";
 
 /**
- * @typedef {import("./types.js").elemenOptions} elemenOptions
- * @typedef {import("./types.js").kindOfNode} kindOfNode
- * @typedef {import("./types.js").listElementOptions} listElementOptions
- * @typedef {import("./types.js").svgElementDetails} svgElementDetails
- * @typedef {import("./types.js").svgElemenOptions} svgElemenOptions
+ * @typedef {import("./index").elementOptions} elementOptions
+ * @typedef {import("./index").elementStyles} elementStyles
+ * @typedef {import("./index").kindOfNode} kindOfNode
+ * @typedef {import("./index").listElementOptions} listElementOptions
+ * @typedef {import("./index").svgElementDetails} svgElementDetails
+ * @typedef {import("./index").svgElementOptions} svgElementOptions
  */
 
 const DOM = (function () {
@@ -36,7 +37,7 @@ const DOM = (function () {
          * Create new DOM with created Element(s) from given properties
          * @overload
          * @param {symbol} token
-         * @param {(elemenOptions | elemenOptions[])} query
+         * @param {(elementOptions | elementOptions[])} query
          * @param {boolean} [true] create
          */
         constructor(token, query, create) {
@@ -74,7 +75,7 @@ const DOM = (function () {
         /**
          * Create new HTMLElement(s) and
          * Collect it into DOM Object
-         * @param {elemenOptions | elemenOptions[] | null} props
+         * @param {elementOptions | elementOptions[] | null} props
          * @returns
          */
         create(props) {
@@ -206,7 +207,7 @@ const DOM = (function () {
         /**
          * Insert an element into current element
          * if it's non exist element, then create one
-         * @param {String | kindOfNode | DOM | elemenOptions} element
+         * @param {String | kindOfNode | DOM | elementOptions} element
          * @returns
          */
         insert(element) {
@@ -310,14 +311,14 @@ const DOM = (function () {
 
         /**
          * Static method for creating new DOM instance with new Element(s)
-         * @param {String | DOM | elemenOptions | elemenOptions[]} tag
-         * @param {elemenOptions} opt
+         * @param {String | DOM | elementOptions | elementOptions[]} tag
+         * @param {elementOptions} opt
          * @returns
          */
         static create(tag, opt = {}) {
             if (tag instanceof DOM) return tag;
 
-            /** @type {(tag: String | elemenOptions, opt: elemenOptions) => elemenOptions} */
+            /** @type {(tag: String | elementOptions, opt: elementOptions) => elementOptions} */
             const props = (tag, opt) => {
                 return Object.assign(typeof tag == "string" ? { tag } : tag, opt);
             };
@@ -337,7 +338,7 @@ const DOM = (function () {
          * Static method for creating new DOM instance with new Element(s)
          * @param {Array<listElementOptions|String>} items
          * @param {"ol"|"ul"} type list type
-         * @param {elemenOptions} opt
+         * @param {elementOptions} opt
          * @returns
          */
         static createList(items, type = "ol", opt = {}) {
@@ -367,7 +368,7 @@ const DOM = (function () {
          * @return
          */
         static createIcon(shape, attr = {}) {
-            /** @type {(opt: Object) => svgElemenOptions} */
+            /** @type {(opt: Object) => svgElementOptions} */
             const checkOpt = (opt) => {
                 /** @type {(size: String) => [string, string]} */
                 const deconstructSize = (size) => {
@@ -432,7 +433,7 @@ const DOM = (function () {
         /**
          * Static method for creating and inserting new stylesheet into active page
          * @param {String} css stylesheet
-         * @param {elemenOptions} props other html attributes
+         * @param {elementOptions} props other html attributes
          * @returns
          */
         static addStyle(css, props = {}) {
