@@ -17,6 +17,7 @@ export default {
             name: "DOM",
             type: "umd",
             export: "default",
+            umdNamedDefine: true,
         },
     },
     devtool: "source-map",
