@@ -1,65 +1,66 @@
 declare namespace DOM {
     export interface elementOptions extends ElementCreationOptions {
-        tag: keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap,
-        namespace?: string,
-        text: string,
-        html: string,
-        class: string,
-        classid?: string | string[],
-        append?: String | HTMLElement,
-        prepend?: String | HTMLElement,
-        before?: String | HTMLElement,
-        after?: String | HTMLElement,
-        replace?: String | HTMLElement,
-        event?: DocumentEventMap[],
-        callback?: (node:HTMLElement) => any,
+        tag: keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
+        namespace?: string;
+        text: string;
+        html: string;
+        class: string;
+        classid?: string | string[];
+        append?: String | HTMLElement;
+        prepend?: String | HTMLElement;
+        before?: String | HTMLElement;
+        after?: String | HTMLElement;
+        replace?: String | HTMLElement;
+        event?: DocumentEventMap[];
+        callback?: (node: HTMLElement) => any;
     }
-    
+
     export interface listElementOptions extends elementOptions {
-        title: string,
-        type: "ol" | "ul",
-        content: string | string[] | listElementOptions[],
+        title: string;
+        type: "ol" | "ul";
+        content: string | string[] | listElementOptions[];
     }
-    
+
     export interface svgElementOptions extends elementOptions {
-        d: string | string[],
-        dPath: string | string[],
-        size?: string,
-        fill?: string,
-        viewBox?: string
+        d: string | string[];
+        dPath: string | string[];
+        size?: string;
+        fill?: string;
+        viewBox?: string;
     }
     export interface svgElementDetails {
-        type: keyof SVGElementTagNameMap,
-        data: SVGElement
+        type: keyof SVGElementTagNameMap;
+        data: SVGElement;
     }
-    
+
     export type kindOfNode = HTMLElement | Document | Window;
-    
-    export type elementStyles = CSSStyleDeclaration | { elm : kindOfNode | String, props: CSSStyleDeclaration }[];
-    
+
+    export type elementStyles =
+        | CSSStyleDeclaration
+        | { elm: kindOfNode | String; props: CSSStyleDeclaration }[];
+
     export interface helper {
-        createElement(props: elementOptions | svgElementOptions, dom_: DOM): DOM,
-        getElement(query: String, dom_: DOM): DOM,
-        setProperties(props: elementOptions, dom: DOM): DOM,
-        setStyles(styles: elementStyles, dom: DOM): DOM
+        createElement(props: elementOptions | svgElementOptions, dom_: DOM): DOM;
+        getElement(query: String, dom_: DOM): DOM;
+        setProperties(props: elementOptions, dom: DOM): DOM;
+        setStyles(styles: elementStyles, dom: DOM): DOM;
     }
     export interface Utils {
         /** Convert string to array of string */
-        strToArr(input: string | string[]): string[],
+        strToArr(input: string | string[]): string[];
         /** Convert string to array of string with custom delimiter */
-        strToArr(input: string | string[], delimiter: string): string[]
+        strToArr(input: string | string[], delimiter: string): string[];
         /** Convert `snake_case` or `kebab-case` to `camelCase` string */
-        toCamel(string: String): string,
+        toCamel(string: String): string;
         /** Convert `camelCase` to `kebab-case` string */
-        toKebab(string: String): string,
+        toKebab(string: String): string;
         /** Check the given query is belongs to Node type or not */
-        isNode(query: kindOfNode | String): boolean,
+        isNode(query: kindOfNode | String): boolean;
     }
-    
 }
 
 /** Extended Built-in Array */
-declare class Base<T extends Object> extends Array<T>{
+declare class Base<T extends Object> extends Array<T> {
     constructor(arrayLength?: number);
     constructor(arrayLength: number);
     constructor(...items: T[]);
@@ -80,7 +81,7 @@ declare class Base<T extends Object> extends Array<T>{
     countValue(val: any): number;
     /** Check given value is on this array or not */
     isOnArray(item: any): boolean;
-    /** Create an array by spliting a string with a delimiter */        
+    /** Create an array by spliting a string with a delimiter */
     static split(string: string, delimiter: string): Base<String>;
 }
 
@@ -110,7 +111,7 @@ declare class DOM extends Base<HTMLElement> {
      * Collect it into DOM Object
      */
     create(props?: DOM.elementOptions | DOM.elementOptions[]): this;
-    
+
     /**
      * Get some HTMLElement(s) and
      * Collect it into DOM Object
@@ -127,7 +128,7 @@ declare class DOM extends Base<HTMLElement> {
     getParents(query?: string | DOM.kindOfNode | DOM): DOM;
 
     /** Set single properties. Can be attributes or stylesheet */
-    set(option: {[k:string]: string | Number | Boolean}): this;
+    set(option: { [k: string]: string | Number | Boolean }): this;
     set(key: string, value: string | Number | Boolean): this;
 
     /** Set a bunch of propertes. Can be attributes or stylesheet */
@@ -138,7 +139,7 @@ declare class DOM extends Base<HTMLElement> {
     /** Remove given element from current element */
     remove(query?: string | DOM.kindOfNode | DOM): this;
 
-    /** 
+    /**
      * Insert an element into current element
      * if it's non exist element, then create one
      */
@@ -147,10 +148,10 @@ declare class DOM extends Base<HTMLElement> {
 
     /** Insert current element into target element */
     insertTo(target?: string | DOM.kindOfNode | DOM): this;
-    
+
     /** Insert current element into first child of target element */
     insertBefore(target?: string | DOM.kindOfNode | DOM, prepend?: boolean | false): this;
-    
+
     /** Insert current element after target element */
     insertAfter(target?: string | DOM.kindOfNode | DOM): this;
 
@@ -171,22 +172,26 @@ declare class DOM extends Base<HTMLElement> {
     static create(tag: DOM): DOM;
 
     /** Static method for creating new DOM instance with new ListElement */
-    static createList(items: Array<DOM.listElementOptions|string>, type: "ol" | "ul", opt?: DOM.elementOptions): DOM;
+    static createList(
+        items: Array<DOM.listElementOptions | string>,
+        type: "ol" | "ul",
+        opt?: DOM.elementOptions
+    ): DOM;
 
     /** Static method for creating new DOM instance with new svg element */
     static createIcon(shape: DOM.svgElementDetails | DOM.svgElementDetails[], attr?: SVGSVGElement): DOM;
-    
+
     /** Static method for creating new DOM instance with matched Element(s) */
     static get(query: string | DOM.kindOfNode | NodeList | DOM): DOM;
-    
+
     /** Static method for checking for existing Element */
     static has(query: string | HTMLElement | DOM.kindOfNode): Promise<HTMLElement | false>;
     static has(query: string | HTMLElement | DOM.kindOfNode, timeout?: Number): Promise<HTMLElement | false>;
-    
+
     /** Static method for creating and inserting new stylesheet into active page */
     static addStyle(css: string, opt?: DOM.elementOptions): DOM;
 
     static Utils: DOM.Utils;
 }
 
-export = DOM;
+export default DOM;
