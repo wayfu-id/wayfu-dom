@@ -1,18 +1,27 @@
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
-import webpack from "webpack";
-import fs from "fs";
-import TerserPlugin from "terser-webpack-plugin";
-
-const dir = dirname(fileURLToPath(import.meta.url));
+const { dirname, resolve } = require("path");
+const webpack = require("webpack");
+const fs = require("fs");
+const TerserPlugin = require("terser-webpack-plugin");
 
 let { name, version, author } = JSON.parse(fs.readFileSync("package.json", "utf8"));
 
-export default {
-    entry: "./index.js",
+module.exports = {
+    entry: {
+        "wayfu-dom": resolve(__dirname, "index.ts"),
+    },
+    module: {
+        rules: [
+            {
+                test: /\.ts$/,
+                exclude: [/node_modules/],
+                loader: "ts-loader",
+            },
+        ],
+    },
+    resolve: { extensions: [".ts", ".js"] },
     output: {
-        path: resolve(dir, "./dist"),
-        filename: "wayfu-dom.min.js",
+        path: resolve(__dirname, "dist"),
+        filename: "[name].min.js",
         library: {
             name: "DOM",
             type: "umd",

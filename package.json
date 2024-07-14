@@ -2,9 +2,7 @@
   "name": "@wayfu/wayfu-dom",
   "version": "0.1.13",
   "description": "WayFu DOM Manipulator",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "type": "module",
+  "main": "index.ts",
   "scripts": {
     "dev": "webpack --config webpack.config.js --mode=development -w",
     "build": "webpack --config webpack.config.js --mode=production",
@@ -14,13 +12,6 @@
     ".": "./index.js",
     "./utils": "./src/utils.js",
     "./package.json": "./package.json"
-  },
-  "typesVersions": {
-    "*": {
-      "utils": [
-        "./src/utils.d.ts"
-      ]
-    }
   },
   "files": [
     "types.d.ts",
@@ -60,8 +51,11 @@
     ]
   },
   "devDependencies": {
+    "declaration-bundler-webpack-plugin": "^1.0.3",
     "husky": "^8.0.3",
     "terser-webpack-plugin": "^5.3.9",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.5.3",
     "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1"
   }

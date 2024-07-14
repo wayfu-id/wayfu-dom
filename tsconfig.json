@@ -1,0 +1,21 @@
+// Inspired by react-typescript-chrome-extension-boilerplate
+{
+  "compilerOptions": {
+      "outDir": "./dist/",
+      "sourceMap": true,
+      "strict": true,
+      "noImplicitReturns": false,
+      "noImplicitAny": true,
+      "removeComments": true,
+      "strictPropertyInitialization": false,
+      "noEmit": false,
+      // "allowImportingTsExtensions": true,
+      "target": "ES2015",
+      "module": "ES2015",
+      "allowJs": true,
+  },
+  "include": [
+      "./src/**/*"
+, "index.js", "index.ts"  ],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+} 
