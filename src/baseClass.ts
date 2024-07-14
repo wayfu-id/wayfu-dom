@@ -2,9 +2,8 @@
  * Extended Built-in Array
  * @class Base
  * @classdesc An custom array extends built in array
- * @augments {Array}
  */
-export default class Base extends Array {
+export default class Base<Data extends any> extends Array {
     /**
      * Get empty status current array
      */
@@ -15,21 +14,21 @@ export default class Base extends Array {
     /**
      * Get all non epmty array items
      */
-    get nonEmptyValue() {
+    get nonEmptyValue(): Data[] {
         return this.filter((val) => !!val);
     }
 
     /**
      * Get first array item
      */
-    get first() {
+    get first(): Data | undefined {
         return !this.isEmpty ? this.at(0) : undefined;
     }
 
     /**
      * Get last array item
      */
-    get last() {
+    get last(): Data | undefined {
         return !this.isEmpty ? this.at(this.length - 1) : undefined;
     }
 
@@ -38,9 +37,8 @@ export default class Base extends Array {
      * `Carefull: This function will override old array.`
      * @param {number} oldIndex
      * @param {number} newIndex
-     * @returns
      */
-    changeIndex(oldIndex, newIndex) {
+    changeIndex(oldIndex: number, newIndex: number) {
         if (newIndex >= this.length) {
             let i = newIndex - this.length + 1;
             while (i--) {
@@ -54,9 +52,8 @@ export default class Base extends Array {
     /**
      * Count number of a value in current array;
      * @param {any} val
-     * @returns {number}
      */
-    countValue(val) {
+    countValue(val: any) {
         let count = 0;
         this.forEach((e) => {
             count += e === val ? 1 : 0;
@@ -67,20 +64,8 @@ export default class Base extends Array {
     /**
      * Check given value is on this array or not
      * @param {any} item
-     * @returns {boolean}
      */
-    isOnArray(item) {
+    isOnArray(item: any) {
         return this.some((elm) => item === elm);
-    }
-
-    /**
-     * Create an array by spliting a string with a delimiter
-     * @param {String} string
-     * @param {String} delimiter
-     * @returns {MyArray}
-     */
-    static split(string, delimiter) {
-        let arr = string.split(delimiter);
-        return new MyArray(...arr);
     }
 }
