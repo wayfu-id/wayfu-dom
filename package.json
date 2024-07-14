@@ -1,6 +1,6 @@
 {
   "name": "@wayfu/wayfu-dom",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "WayFu DOM Manipulator",
   "main": "index.ts",
   "scripts": {
