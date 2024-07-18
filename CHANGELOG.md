@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.15](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.14...v0.1.15) (2024-07-18)
+
+
+### Features
+
+* add DOM.getFirst() method and implement it ([26dfd4c](https://github.com/wayfu-id/wayfu-dom/commit/26dfd4c8f0d5c071566b8ab1bc35d8a3a22b5b9b))
+
 ### [0.1.14](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.13...v0.1.14) (2024-07-14)
 
 ### [0.1.13](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.12...v0.1.13) (2024-04-20)
