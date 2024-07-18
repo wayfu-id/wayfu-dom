@@ -9,12 +9,10 @@
     "release": "standard-version"
   },
   "exports": {
-    ".": "./index.js",
-    "./utils": "./src/utils.js",
+    ".": "./index.ts",
     "./package.json": "./package.json"
   },
   "files": [
-    "types.d.ts",
     "index.*",
     "dist",
     "src",
