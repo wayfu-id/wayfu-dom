@@ -1,56 +1,57 @@
 import Base from "./src/baseClass";
 import { isNode, toCamel, toKebab } from "./src/utils"; 
 import { createElement, getElement, setProperties, setStyles } from "./src/helpers";
+declare global {
+    namespace DOM {
+        export interface elementOptions extends ElementCreationOptions {
+            [k: string]: any;
+            tag?: keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
+            namespace?: string;
+            text?: string;
+            html?: string;
+            class?: string;
+            classid?: string | string[];
+            dispatch?: any;
+            addClass?: string | string[];
+            append?: String | HTMLElement;
+            prepend?: String | HTMLElement;
+            before?: String | HTMLElement;
+            after?: String | HTMLElement;
+            replace?: String | HTMLElement;
+            removeClass?: string;
+            toggleClass?: string;
+            disabled?: boolean;
+            event?: DocumentEventMap;
+            value?: any;
+            readonly?: boolean;
+            readOnly?: boolean;
+            callback?: (node: HTMLElement) => any;
+        }
 
-declare namespace DOM {
-    export interface elementOptions extends ElementCreationOptions {
-        [k: string]: any;
-        tag?: keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap;
-        namespace?: string;
-        text?: string;
-        html?: string;
-        class?: string;
-        classid?: string | string[];
-        dispatch?: any;
-        addClass?:string | string[];
-        append?: String | HTMLElement;
-        prepend?: String | HTMLElement;
-        before?: String | HTMLElement;
-        after?: String | HTMLElement;
-        replace?: String | HTMLElement;
-        removeClass?: string;
-        toggleClass?: string;
-        disabled?: boolean;
-        event?: DocumentEventMap;
-        value?: any;
-        readonly?: boolean;
-        readOnly?: boolean;
-        callback?: (node: HTMLElement) => any;
+        export interface listElementOptions extends elementOptions {
+            title: string;
+            type: "ol" | "ul";
+            content: string | string[] | listElementOptions[];
+        }
+
+        export interface svgElementOptions extends elementOptions {
+            d: string | string[];
+            dPath: string | string[];
+            size?: string;
+            fill?: string;
+            viewBox?: string;
+        }
+        export interface svgElementDetails {
+            type: keyof SVGElementTagNameMap;
+            data: SVGElement;
+        }
+
+        export type kindOfNode = HTMLElement | Document | Window;
+
+        export type elementStyles =
+            | CSSStyleDeclaration
+            | { elm: kindOfNode | string; props: CSSStyleDeclaration }[];
     }
-
-    export interface listElementOptions extends elementOptions {
-        title: string;
-        type: "ol" | "ul";
-        content: string | string[] | listElementOptions[];
-    }
-
-    export interface svgElementOptions extends elementOptions {
-        d: string | string[];
-        dPath: string | string[];
-        size?: string;
-        fill?: string;
-        viewBox?: string;
-    }
-    export interface svgElementDetails {
-        type: keyof SVGElementTagNameMap;
-        data: SVGElement;
-    }
-
-    export type kindOfNode = HTMLElement | Document | Window;
-
-    export type elementStyles =
-        | CSSStyleDeclaration
-        | { elm: kindOfNode | string; props: CSSStyleDeclaration }[];
 }
 
 class DOM extends Base<HTMLElement> {
