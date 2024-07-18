@@ -1,5 +1,5 @@
 import Base from "./src/baseClass";
-import { isNode, toCamel, toKebab } from "./src/utils"; 
+import { isNode, toCamel } from "./src/utils";
 import { createElement, getElement, setProperties, setStyles } from "./src/helpers";
 declare global {
     namespace DOM {
@@ -89,9 +89,9 @@ export default class DOM extends Base<HTMLElement> {
         return this.first?.childNodes;
     }
 
-    /** Get current element parent */
-    get parent() {
-        return this.first?.parentNode;
+    /** Get current element classList*/
+    get classList() {
+        return this.first?.classList;
     }
 
     /** Get current next sibling element */
@@ -99,26 +99,15 @@ export default class DOM extends Base<HTMLElement> {
         return this.first?.nextSibling;
     }
 
-    /** Get current element classList*/
-    get classList() {
-        return this.first?.classList;
-    }
-
-    private constructor();
-    private constructor(query?: string);
-    private constructor(query?: DOM | DOM.kindOfNode | NodeList);
-    private constructor(query?: DOM.elementOptions | DOM.elementOptions[], create?: boolean);
-    private constructor(query?: string | DOM | DOM.elementOptions | DOM.elementOptions[] | DOM.kindOfNode | NodeList, create?: boolean);
-    private constructor(query?: any, create?: boolean) {
-        super();
-        return this;
-        // return query ? create ? this.create(query) : this.get(query) : this.init();
+    /** Get current element parent */
+    get parent() {
+        return this.first?.parentNode;
     }
 
     /**
      * Create new HTMLElement(s) and
      * Collect it into DOM Object
-     * @param props 
+     * @param props
      */
     create(props: string): DOM;
     create(props: DOM): DOM;
@@ -130,21 +119,21 @@ export default class DOM extends Base<HTMLElement> {
         if (!props) return this;
         if (props instanceof NodeList || isNode(props)) {
             props = DOM.get(props);
-        } 
-        
+        }
+
         if (this.first) {
             let opt = { append: this.first } as DOM.elementOptions;
             return DOM.create(props, opt);
         }
 
-        props = typeof props === "string" ? {tag: props} as DOM.elementOptions: props;
+        props = typeof props === "string" ? ({ tag: props } as DOM.elementOptions) : props;
         if (Array.isArray(props)) {
-            if(props instanceof DOM) return DOM.get(props);
+            if (props instanceof DOM) return DOM.get(props);
 
             for (let opt of props) {
                 if (typeof opt !== "object") continue;
-                opt['tag'] = opt.tag ?? "div";
-                
+                opt["tag"] = opt.tag ?? "div";
+
                 createElement(opt, this);
             }
 
@@ -157,7 +146,7 @@ export default class DOM extends Base<HTMLElement> {
     /**
      * Get some HTMLElement(s) and
      * Collect it into DOM Object
-     * @param query 
+     * @param query
      */
     get(query: string): DOM;
     get(query: DOM): DOM;
@@ -193,7 +182,7 @@ export default class DOM extends Base<HTMLElement> {
         const setParent = (elm: DOM) => DOM.get(elm.parent);
         const isPeek = (elm: DOM) => {
             let { isEmpty, first } = elm;
-            return !isEmpty && (first && !(first instanceof Document));
+            return !isEmpty && first && !(first instanceof Document);
         };
 
         let elem: DOM = this,
@@ -209,8 +198,10 @@ export default class DOM extends Base<HTMLElement> {
         return parents;
     }
 
-    init(): DOM {return this};
-    
+    init(): DOM {
+        return this;
+    }
+
     /**
      * Insert an element into current element
      * if it's non exist element, then create one
@@ -227,7 +218,7 @@ export default class DOM extends Base<HTMLElement> {
             return fn.get(e).isEmpty ? fn.create(e) : fn.get(e);
         })(query, DOM);
 
-        if(elm) this.first?.appendChild(elm);
+        if (elm) this.first?.appendChild(elm);
 
         return this;
     }
@@ -242,7 +233,7 @@ export default class DOM extends Base<HTMLElement> {
     insertAfter(target: DOM.kindOfNode): DOM;
     insertAfter(target: any): DOM {
         const { parent, nextSibling } = DOM.get(target);
-    
+
         if (!this.first || !nextSibling) return this;
 
         parent?.insertBefore(this.first, nextSibling);
@@ -261,7 +252,7 @@ export default class DOM extends Base<HTMLElement> {
     insertBefore(target: any, prepend: boolean = false): DOM {
         const { first, parent, childNodes } = DOM.get(target);
 
-        if(!this.first) return this;
+        if (!this.first) return this;
 
         if (!prepend && first) {
             parent?.insertBefore(this.first, first);
@@ -293,9 +284,9 @@ export default class DOM extends Base<HTMLElement> {
      */
     matches(query: string): boolean;
     matches(query: DOM): boolean;
-    matches(query: DOM.kindOfNode ): boolean;
+    matches(query: DOM.kindOfNode): boolean;
     matches(query: NodeList): boolean;
-    matches(query: any): boolean{
+    matches(query: any): boolean {
         let elms = DOM.get(query),
             { length: i } = elms;
 
@@ -306,13 +297,15 @@ export default class DOM extends Base<HTMLElement> {
 
     /**
      * Remove current element from body
-     */ 
+     */
     remove(): DOM;
     /**
      * Remove given element from current element
      * @param query
-    */
-    remove(query: string | DOM.kindOfNode | DOM): DOM;
+     */
+    remove(query: string): DOM;
+    remove(query: DOM.kindOfNode): DOM;
+    remove(query: DOM): DOM;
     remove(query?: any) {
         let ele: HTMLElement | undefined = query ? DOM.getFirst(query) : this.first;
 
@@ -332,7 +325,7 @@ export default class DOM extends Base<HTMLElement> {
     replace(target: DOM.kindOfNode): DOM;
     replace(target: any): DOM {
         const { parent, first } = DOM.get(target);
-        if(!this.first || !first) return this;
+        if (!this.first || !first) return this;
 
         parent?.replaceChild(this.first, first);
 
@@ -363,13 +356,13 @@ export default class DOM extends Base<HTMLElement> {
 
         return this;
     }
-    
+
     /**
      * Set single properties. Can be attributes or stylesheet
      * @param key
      * @param value
      */
-    set(key: {[k: string]: string | number | boolean}): DOM;
+    set(key: { [k: string]: string | number | boolean }): DOM;
     set(key: string, value: string | number | boolean): DOM;
     set(key: any, value?: any): DOM {
         if (typeof key === "object") {
@@ -382,13 +375,16 @@ export default class DOM extends Base<HTMLElement> {
         if (this.isEmpty) return this;
 
         const [isStyleKey, props] = ((k, v) => {
-            if(!this.first) return [false, undefined];
+            if (!this.first) return [false, undefined];
             let keys = Object.getOwnPropertyNames(this.first.style);
-            return [keys.some((e) => e === k), { [k]: v } as DOM.elementStyles | DOM.elementOptions];
+            return [
+                keys.some((e) => e === k),
+                { [k]: v } as DOM.elementStyles | DOM.elementOptions,
+            ];
         })(toCamel(key), value);
 
-        if(!props) return this;
-        return isStyleKey 
+        if (!props) return this;
+        return isStyleKey
             ? setStyles(props as DOM.elementStyles, this)
             : setProperties(props as DOM.elementOptions, this);
     }
@@ -405,18 +401,27 @@ export default class DOM extends Base<HTMLElement> {
      * @param opt
      */
     static create(query: string, opt?: DOM.elementOptions | DOM.elementOptions[]): DOM;
-    static create(query: string | DOM | DOM.elementOptions | DOM.elementOptions[], opt?: DOM.elementOptions | DOM.elementOptions[]): DOM;
+    static create(
+        query: string | DOM | DOM.elementOptions | DOM.elementOptions[],
+        opt?: DOM.elementOptions | DOM.elementOptions[]
+    ): DOM;
     static create(query: any, opt?: any) {
         if (query instanceof DOM) return query;
 
-        const props = (tag?: string | DOM.elementOptions, opt?: DOM.elementOptions)  => {
-            return Object.assign(!!tag ? typeof tag == "string" ? { tag } : tag : {tag: "div"}, opt ) as DOM.elementOptions;
+        const props = (tag?: string | DOM.elementOptions, opt?: DOM.elementOptions) => {
+            return Object.assign(
+                {},
+                !!tag ? (typeof tag == "string" ? { tag } : tag) : { tag: "div" },
+                opt
+            ) as DOM.elementOptions;
         };
 
         if (Array.isArray(query)) {
             query.map((e) => {
                 let { tag: t, ...prop } = e;
-                return !!prop ? props(t, props(prop, opt as DOM.elementOptions)) : props(e, opt as DOM.elementOptions);
+                return !!prop
+                    ? props(t, props(prop, opt as DOM.elementOptions))
+                    : props(e, opt as DOM.elementOptions);
             });
             return new DOM(_token, query, true);
         }
@@ -465,7 +470,11 @@ export default class DOM extends Base<HTMLElement> {
      */
     static createList(items: string[]): DOM;
     static createList(items: DOM.listElementOptions[]): DOM;
-    static createList(items: DOM.listElementOptions[] | string[], type?: string, opt?: DOM.elementOptions): DOM;
+    static createList(
+        items: DOM.listElementOptions[] | string[],
+        type?: string,
+        opt?: DOM.elementOptions
+    ): DOM;
     static createList(items: any[], type: string = "ol", opt?: DOM.elementOptions): DOM {
         let Lists = DOM.create(type, opt);
         if (Array.isArray(items)) {
@@ -485,7 +494,6 @@ export default class DOM extends Base<HTMLElement> {
         }
         return Lists;
     }
-    
 
     /**
      * Create an svg element
@@ -500,7 +508,7 @@ export default class DOM extends Base<HTMLElement> {
             const deconstructSize = (size: string) => {
                 return size.split(" ").length == 1 ? [size, size] : size.split(" ");
             };
-            let newOpt: {[k: string]: string} = {};
+            let newOpt: { [k: string]: string } = {};
             for (const key in opt) {
                 if (key !== "size") {
                     newOpt[key] = opt[key];
@@ -523,7 +531,6 @@ export default class DOM extends Base<HTMLElement> {
         return svgDOM;
     }
 
-
     /**
      * Static method for checking for existing Element
      * @param query target element
@@ -531,7 +538,10 @@ export default class DOM extends Base<HTMLElement> {
      */
     static has(query: string, timeout?: number): Promise<HTMLElement | false>;
     static has(query: DOM, timeout?: number): Promise<HTMLElement | false>;
-    static has(query: ParentNode | null | undefined, timeout?: number): Promise<HTMLElement | false>;
+    static has(
+        query: ParentNode | null | undefined,
+        timeout?: number
+    ): Promise<HTMLElement | false>;
     static has(query: DOM.kindOfNode | NodeList, timeout?: number): Promise<HTMLElement | false>;
     static has(query: DOM.kindOfNode | DOM, timeout?: number): Promise<HTMLElement | false>;
     static has(query: any, timeout: number = 10): Promise<HTMLElement | false> {
@@ -542,14 +552,14 @@ export default class DOM extends Base<HTMLElement> {
                     done(first);
                     clearInterval(loop);
                 }
-                if (((timeout -= 1) == 0)) {
+                if ((timeout -= 1) == 0) {
                     done(false);
                     clearInterval(loop);
                 }
             }, 1e3);
         });
     }
-    
+
     /**
      * Static method for creating and inserting new stylesheet into active page
      * @param css stylesheet
@@ -562,5 +572,3 @@ export default class DOM extends Base<HTMLElement> {
         return DOM.create(query);
     }
 }
-
-export default DOM;

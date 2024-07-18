@@ -1,41 +1,32 @@
-import DOM from "../index";
-
-const rgx = {
-    snaKebab: /([-_][a-z])/g,
-    camelCase: /[A-Z]/g,
-};
-
 /**
  * Check the given query is belongs to Node type or not
- * @param {kindOfNode | Object} query
+ * @param query
  */
-function isNode(query: DOM.kindOfNode | any) {
-    return (
-        query instanceof Document ||
-        query instanceof Window ||
-        query instanceof HTMLElement
-    );
+function isNode(query: any) {
+    return query instanceof Document || query instanceof Window || query instanceof HTMLElement;
 }
 
 /**
  * Convert string to array of string
- * @param {string | string[]} input
- * @param {string} [delimiter=" "] by default using space
+ * @param input
  */
+function strToArr(input: string[]): string[];
+/**
+ * Convert string to array of string
+ * @param input
+ * @param delimiter by default using space
+ */
+function strToArr(input: string, delimiter?: string): string[];
 function strToArr(input: string | string[], delimiter: string = " ") {
-    return Array.isArray(input)
-        ? input
-        : typeof input === "string"
-        ? input.split(delimiter)
-        : [];
+    return Array.isArray(input) ? input : typeof input === "string" ? input.split(delimiter) : [];
 }
 
 /**
  * Convert `snake_case` or `kebab-case` to `camelCase` string
- * @param {string} string
+ * @param string
  */
 function toCamel(string: string) {
-    let { snaKebab } = rgx;
+    let snaKebab = /([-_][a-z])/g;
     if (!snaKebab.test(string)) return string;
 
     string = string.toLowerCase();
@@ -46,10 +37,10 @@ function toCamel(string: string) {
 
 /**
  * Convert `camelCase` to `kebab-case` string
- * @param {string} string
+ * @param string
  */
 function toKebab(string: string) {
-    let { camelCase } = rgx;
+    let camelCase = /[A-Z]/g;
     if (!camelCase.test(string)) return string;
 
     return string.replace(camelCase, (m) => {

@@ -4,8 +4,8 @@ import { toKebab, strToArr } from "./utils";
 /**
  * Actual method for creating Element(s)
  * and Collect it into DOM Object
- * @param {DOM | DOM.elementOptions | DOM.svgElementOptions} props
- * @param {DOM?} dom_
+ * @param props
+ * @param dom_
  */
 function createElement(props: DOM | DOM.elementOptions, dom_?: DOM): DOM;
 function createElement(props: DOM | DOM.svgElementOptions, dom_?: DOM): DOM;
@@ -28,12 +28,12 @@ function createElement(props: any, dom_?: DOM) {
 /**
  * Method for geting Element(s)
  * and Collect it into DOM Object
- * @param {string} query
- * @param {DOM} dom_
+ * @param query
+ * @param dom_
  * @returns
  */
 function getElement(query: string, dom_: DOM) {
-    let _dom = dom_ ? dom_ :  DOM.init();
+    let _dom = dom_ ? dom_ : DOM.init();
 
     if (!_dom.first) {
         if (/^(?:document|window)$/g.test(query)) {
@@ -52,8 +52,8 @@ function getElement(query: string, dom_: DOM) {
 
 /**
  * Set properties for current HTML Element
- * @param {DOM.elementOptions} props
- * @param {DOM} dom
+ * @param props
+ * @param dom
  */
 function setProperties(props: DOM.elementOptions, dom: DOM) {
     let { namespace } = props;
@@ -62,72 +62,68 @@ function setProperties(props: DOM.elementOptions, dom: DOM) {
     const setProp = (node: HTMLElement & HTMLTitleElement & Node & HTMLInputElement) => {
         for (const name in props) {
             if (props.hasOwnProperty(name)) {
+                let val: any | null = props[name];
                 if (!namespace) {
-                    let val: any | undefined = "";
                     switch (name) {
                         case "text":
                             let text =
-                                "innerText" in document ? "innerText" : "textContent";
-                                
-                            val = props[name] as any;
-                            node[name] = val ? val : node[name];
+                                "innerText" in document
+                                    ? ("innerText" as "innerText")
+                                    : ("textContent" as "textContent");
+
+                            node[text] = val ? val : node[name];
                             break;
                         case "html":
-                            node.innerHTML = props[name] ? props[name] :  node.innerHTML;
+                            node.innerHTML = props[name] ? props[name] : node.innerHTML;
                             break;
                         case "class":
+                            if (typeof val === "string" && !/ /g.test(val)) {
+                                node.setAttribute(name, val);
+                                break;
+                            }
                         case "classid":
                         case "addClass":
-                            val = props[name];
-                            let val2 = val ? strToArr(val) : [];
-
-                            if (val2.length) {
-                                for (let cls of val2) {
+                            let classes = val ? strToArr(val) : [];
+                            if (classes.length > 1) {
+                                for (let cls of classes) {
                                     node.classList.add(cls);
                                 }
+                            } else {
+                                node.setAttribute(name, classes[0]);
                             }
                             break;
                         case "removeClass":
-                            val = props[name];
                             node.classList.remove(val);
                             break;
                         case "toggleClass":
-                            val = props[name];
                             node.classList.toggle(val);
                             break;
                         case "disabled":
-                            val = props[name];
                             node.disabled = val;
                             break;
                         case "append":
-                            val = props[name];
                             DOM.get(node).insertTo(val);
                             break;
                         case "prepend":
-                            val = props[name];
                             DOM.get(node).insertBefore(val, true);
                             break;
                         case "before":
-                            val = props[name];
                             DOM.get(node).insertBefore(val);
                             break;
                         case "after":
-                            val = props[name];
                             DOM.get(node).insertAfter(val);
                             break;
                         case "value":
-                            node.value = props[name];
+                            node.value = val;
                             break;
                         case "dispatch":
-                            node.dispatchEvent(props[name]);
+                            node.dispatchEvent(val);
                             break;
                         case "replace":
-                            val = props[name];
                             DOM.get(node).replace(val);
                             break;
                         case "event":
-                            val = props[name];
-                            if(val){
+                            if (val) {
                                 for (const evName in val) {
                                     if (val.hasOwnProperty(evName)) {
                                         DOM.get(node).onEvent(evName, val[evName]);
@@ -136,22 +132,20 @@ function setProperties(props: DOM.elementOptions, dom: DOM) {
                             }
                             break;
                         case "callback":
-                            if(props[name] && typeof props[name] === "function") {
-                                props[name](node);
+                            if (val && typeof val === "function") {
+                                val(node);
                             }
                             break;
                         case "readonly":
                         case "readOnly":
-                            val = props[name];
                             node.readOnly = val;
                             break;
                         default:
-                            val = props[name];
                             node.setAttribute(name, val);
                     }
                 } else {
                     let key = name === "viewBox" ? name : toKebab(name);
-                    node.setAttributeNS(null, key, props[name]);
+                    node.setAttributeNS(null, key, val);
                 }
             }
         }
@@ -166,29 +160,30 @@ function setProperties(props: DOM.elementOptions, dom: DOM) {
 
 /**
  * Set Element(s) styles. Can process multiple element
- * @param {DOM.elementStyles} styles
- * @param {DOM} dom
+ * @param styles
+ * @param dom
  */
 function setStyles(styles: DOM.elementStyles, dom: DOM) {
     const setStyle = (node: HTMLElement | undefined, props: CSSStyleDeclaration) => {
-        if (!node) return dom;
+        if (!node) return;
         for (const key in props) {
             if (props.hasOwnProperty(key)) {
+                let val: any | null = props[key];
                 switch (key) {
                     case "zIndex":
-                        node.style.zIndex = props[key];
+                        node.style.zIndex = val;
                         break;
                     case "margin":
-                        node.style.margin = props[key];
+                        node.style.margin = val;
                         break;
                     case "padding":
-                        node.style.padding = props[key];
+                        node.style.padding = val;
                         break;
                     case "display":
-                        node.style.display = props[key];
+                        node.style.display = val;
                         break;
                     default:
-                        node.style[key] = props[key];
+                        node.style[key] = val;
                 }
             }
         }
