@@ -284,15 +284,7 @@ export default class DOM extends Base<HTMLElement> {
     insertTo(target: DOM): DOM;
     insertTo(target: DOM.kindOfNode): DOM;
     insertTo(target: any): DOM {
-        function getEle (query: string): HTMLElement | undefined;
-        function getEle (query: DOM.kindOfNode): HTMLElement | undefined;
-        function getEle (query: DOM): HTMLElement | undefined;
-        function getEle (query: any): HTMLElement | undefined {
-            return DOM.get(query)?.first;
-        };
-
-        if(this.first) getEle(target)?.appendChild(this.first);
-
+        if (this.first) DOM.getFirst(target)?.appendChild(this.first);
         return this;
     }
 
@@ -322,17 +314,10 @@ export default class DOM extends Base<HTMLElement> {
     */
     remove(query: string | DOM.kindOfNode | DOM): DOM;
     remove(query?: any) {
-        function getEle (query: string): HTMLElement | undefined;
-        function getEle (query: DOM.kindOfNode): HTMLElement | undefined;
-        function getEle (query: DOM): HTMLElement | undefined;
-        function getEle (query: any): HTMLElement | undefined {
-            return DOM.get(query)?.first;
-        };
-        
-        let ele: HTMLElement | undefined = query ? getEle(query) : this.first;
+        let ele: HTMLElement | undefined = query ? DOM.getFirst(query) : this.first;
 
-        if(ele) {
-            query ? this.first?.removeChild(ele) : getEle("body")?.removeChild(ele);
+        if (ele) {
+            query ? this.first?.removeChild(ele) : DOM.getFirst("body")?.removeChild(ele);
         }
 
         return this;
@@ -455,6 +440,19 @@ export default class DOM extends Base<HTMLElement> {
         return new DOM(_token, query);
     }
 
+    /**
+     * Static method for creating new DOM instance and get the first element if any
+     * @param query
+     */
+    static getFirst(query: string | DOM.kindOfNode): HTMLElement | undefined;
+    static getFirst(query: string | DOM.kindOfNode | DOM): HTMLElement | undefined;
+    static getFirst(query: any): HTMLElement | undefined {
+        return DOM.get(query)?.first;
+    }
+
+    /**
+     * Static method for creating new DOM instance with no element inside
+     */
     static init(): DOM {
         return new DOM(_token).init();
     }
@@ -539,7 +537,7 @@ export default class DOM extends Base<HTMLElement> {
     static has(query: any, timeout: number = 10): Promise<HTMLElement | false> {
         return new Promise((done) => {
             let loop = setInterval(() => {
-                let { first } = DOM.get(query);
+                let first = DOM.getFirst(query);
                 if (first) {
                     done(first);
                     clearInterval(loop);

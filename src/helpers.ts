@@ -194,14 +194,9 @@ function setStyles(styles: DOM.elementStyles, dom: DOM) {
         }
     };
 
-    function getEle (query: string | DOM.kindOfNode): HTMLElement | undefined;
-    function getEle (query: any): HTMLElement | undefined {
-        return DOM.get(query)?.first;
-    };
-
     if (Array.isArray(styles)) {
         styles.forEach(({ elm, props }) => {
-            setStyle(getEle(elm), props);
+            setStyle(DOM.getFirst(elm), props);
         });
 
         return dom;
