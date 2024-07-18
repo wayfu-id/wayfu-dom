@@ -1,4 +1,4 @@
-const { dirname, resolve } = require("path");
+const path = require("path");
 const webpack = require("webpack");
 const fs = require("fs");
 const TerserPlugin = require("terser-webpack-plugin");
@@ -7,7 +7,7 @@ let { name, version, author } = JSON.parse(fs.readFileSync("package.json", "utf8
 
 module.exports = {
     entry: {
-        "wayfu-dom": resolve(__dirname, "index.ts"),
+        "wayfu-dom": path.resolve(__dirname, "index.ts"),
     },
     module: {
         rules: [
@@ -20,7 +20,7 @@ module.exports = {
     },
     resolve: { extensions: [".ts", ".js"] },
     output: {
-        path: resolve(__dirname, "dist"),
+        path: path.resolve(__dirname, "dist"),
         filename: "[name].min.js",
         library: {
             name: "DOM",
@@ -28,6 +28,7 @@ module.exports = {
             export: "default",
             umdNamedDefine: true,
         },
+        clean: true,
     },
     devtool: "source-map",
     plugins: [
