@@ -54,7 +54,36 @@ declare global {
     }
 }
 
-class DOM extends Base<HTMLElement> {
+const _token: symbol = Symbol();
+
+export default class DOM extends Base<HTMLElement> {
+    private constructor(token: symbol);
+    private constructor(token: symbol, query?: string);
+    private constructor(token: symbol, query?: DOM | DOM.kindOfNode | NodeList);
+    private constructor(
+        token: symbol,
+        query?: keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap,
+        create?: boolean
+    );
+    private constructor(
+        token: symbol,
+        query?: DOM.elementOptions | DOM.elementOptions[],
+        create?: boolean
+    );
+    private constructor(token: symbol, query?: any, create?: boolean) {
+        super();
+        if (_token !== token) {
+            throw new TypeError(
+                "DOM is not constructable. " +
+                    "Use DOM.create(), DOM.createList(), DOM.createIcon(), " +
+                    "DOM.get(), DOM.has(), DOM.addStyle(), or DOM.init()."
+            );
+        }
+        let _dom = this;
+        // return this;
+        return query ? (create ? _dom.create(query) : _dom.get(query)) : _dom.init();
+    }
+
     /** Get current element childNodes */
     get childNodes() {
         return this.first?.childNodes;
@@ -404,10 +433,9 @@ class DOM extends Base<HTMLElement> {
                 let { tag: t, ...prop } = e;
                 return !!prop ? props(t, props(prop, opt as DOM.elementOptions)) : props(e, opt as DOM.elementOptions);
             });
-            return new DOM().create(query);
+            return new DOM(_token, query, true);
         }
-        return new DOM().create(props(query, opt as DOM.elementOptions));
-
+        return new DOM(_token, props(query, opt as DOM.elementOptions), true);
     }
 
     /**
@@ -416,19 +444,21 @@ class DOM extends Base<HTMLElement> {
      */
     static get(query: string): DOM;
     static get(query: DOM): DOM;
+    static get(query: DOM.kindOfNode): DOM;
     static get(query: ParentNode | null | undefined): DOM;
     static get(query: DOM.kindOfNode | NodeList): DOM;
+    static get(query: DOM.kindOfNode | string): DOM;
     static get(query: DOM.kindOfNode | DOM): DOM;
+    static get(query: string | DOM.kindOfNode | DOM): DOM;
     static get(query: any): DOM {
         if (query instanceof DOM) return query;
-        return new DOM(query).get(query);
+        return new DOM(_token, query);
     }
 
     static init(): DOM {
-        return new DOM().init();
-    };
+        return new DOM(_token).init();
+    }
 
-    
     /**
      * Static method for creating new DOM instance with new Element(s)
      * @param items
