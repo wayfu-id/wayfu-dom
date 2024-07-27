@@ -66,9 +66,9 @@ You can create an element(s) easily using `DOM.create()` method.
 type elemenOptions = ElementCreationOptions & {
     tag: keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap,
     namespace?: string,
-    text: string,
-    html: string,
-    class: string,
+    text?: string,
+    html?: string,
+    class?: string,
     classid?: string | string[],
     append?: String | HTMLElement,
     prepend?: String | HTMLElement,
@@ -193,11 +193,11 @@ let lastPost = postItems.last; // Will return HTMLElement or undefined
 
 /** This getters bellow will work if there is a `first` element */
 // .childNodes get the first element childNodes
-postItems.childNodes; // will return NodeList or undefined
+postItems.childNodes; // will return DOM or undefined
 // .parent to get the first element parent element
-postItems.parent; // will return HTMLElement or undefined
+postItems.parent; // will return DOM or undefined
 // .nextSibling to get next sibling element
-postItems.nextSibling; // will return HTMLElement or undefined
+postItems.nextSibling; // will return DOM or undefined
 // .classList to get all css class from first element
 postItems.classList; // will return DOMTokenList or undefined
 
