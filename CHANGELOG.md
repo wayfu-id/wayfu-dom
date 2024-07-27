@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.15...v0.2.0) (2024-07-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **main:** By using DOM as a function it same as DOM.get function
+
+### Features
+
+* **main:** Allow call DOM object as a function ([db86cc7](https://github.com/wayfu-id/wayfu-dom/commit/db86cc7ca91393234ab3e90efd5228a1f80ed679))
+
 ### [0.1.15](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.14...v0.1.15) (2024-07-18)
 
 
