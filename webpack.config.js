@@ -32,6 +32,9 @@ module.exports = {
     },
     devtool: "source-map",
     plugins: [
+        new webpack.DefinePlugin({
+            __VERSION__: JSON.stringify(`${version}`),
+        }),
         new webpack.BannerPlugin({
             banner: `${name} v${version} - (c) ${author}, ISC License`,
         }),
@@ -41,7 +44,7 @@ module.exports = {
             new TerserPlugin({
                 terserOptions: {
                     compress: {
-                        keep_classnames: false,
+                        keep_classnames: true,
                         keep_fnames: true,
                     },
                 },
