@@ -1,7 +1,7 @@
-import Base from "./src/baseClass";
-import { isNode, toCamel } from "./src/utils";
-import { createElement, getElement, setProperties, setStyles } from "./src/helpers";
+import Base, { _proto_, _static_, _token } from "./src/index";
+
 declare global {
+    export const __VERSION__: string;
     namespace DOM {
         export interface elementOptions extends ElementCreationOptions {
             [k: string]: any;
@@ -13,12 +13,12 @@ declare global {
             classid?: string | string[];
             dispatch?: any;
             addClass?: string | string[];
-            append?: String | HTMLElement;
-            prepend?: String | HTMLElement;
-            before?: String | HTMLElement;
-            after?: String | HTMLElement;
-            replace?: String | HTMLElement;
-            removeClass?: string;
+            append?: string | DOM | HTMLElement;
+            prepend?: string | DOM | HTMLElement;
+            before?: string | DOM | HTMLElement;
+            after?: string | DOM | HTMLElement;
+            replace?: string | DOM | HTMLElement;
+            removeClass?: string | string[];
             toggleClass?: string;
             disabled?: boolean;
             event?: DocumentEventMap;
@@ -54,55 +54,28 @@ declare global {
     }
 }
 
-const _token: symbol = Symbol();
+declare class DOM extends Base<HTMLElement> {
+    readonly VERSION: string;
 
-export default class DOM extends Base<HTMLElement> {
-    private constructor(token: symbol);
-    private constructor(token: symbol, query?: string);
-    private constructor(token: symbol, query?: DOM | DOM.kindOfNode | NodeList);
-    private constructor(
+    constructor(token: symbol);
+    constructor(token: symbol);
+    constructor(token: symbol, query?: string);
+    constructor(token: symbol, query?: DOM | DOM.kindOfNode | NodeList);
+    constructor(
         token: symbol,
         query?: keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap,
         create?: boolean
     );
-    private constructor(
-        token: symbol,
-        query?: DOM.elementOptions | DOM.elementOptions[],
-        create?: boolean
-    );
-    private constructor(token: symbol, query?: any, create?: boolean) {
-        super();
-        if (_token !== token) {
-            throw new TypeError(
-                "DOM is not constructable. " +
-                    "Use DOM.create(), DOM.createList(), DOM.createIcon(), " +
-                    "DOM.get(), DOM.has(), DOM.addStyle(), or DOM.init()."
-            );
-        }
-        let _dom = this;
-        // return this;
-        return query ? (create ? _dom.create(query) : _dom.get(query)) : _dom.init();
-    }
+    constructor(token: symbol, query?: DOM.elementOptions | DOM.elementOptions[], create?: boolean);
 
     /** Get current element childNodes */
-    get childNodes() {
-        return this.first?.childNodes;
-    }
-
+    get childNodes(): DOM | undefined;
     /** Get current element classList*/
-    get classList() {
-        return this.first?.classList;
-    }
-
+    get classList(): DOMTokenList | undefined;
     /** Get current next sibling element */
-    get nextSibling() {
-        return this.first?.nextSibling;
-    }
-
+    get nextSibling(): DOM | undefined;
     /** Get current element parent */
-    get parent() {
-        return this.first?.parentNode;
-    }
+    get parent(): DOM | undefined;
 
     /**
      * Create new HTMLElement(s) and
@@ -110,38 +83,12 @@ export default class DOM extends Base<HTMLElement> {
      * @param props
      */
     create(props: string): DOM;
+    create(props: string[]): DOM;
     create(props: DOM): DOM;
     create(props: DOM.kindOfNode): DOM;
     create(props: NodeList): DOM;
     create(props: DOM.elementOptions): DOM;
     create(props: DOM.elementOptions[]): DOM;
-    create(props: any): DOM {
-        if (!props) return this;
-        if (props instanceof NodeList || isNode(props)) {
-            props = DOM.get(props);
-        }
-
-        if (this.first) {
-            let opt = { append: this.first } as DOM.elementOptions;
-            return DOM.create(props, opt);
-        }
-
-        props = typeof props === "string" ? ({ tag: props } as DOM.elementOptions) : props;
-        if (Array.isArray(props)) {
-            if (props instanceof DOM) return DOM.get(props);
-
-            for (let opt of props) {
-                if (typeof opt !== "object") continue;
-                opt["tag"] = opt.tag ?? "div";
-
-                createElement(opt, this);
-            }
-
-            return this;
-        }
-
-        return createElement(props, this);
-    }
 
     /**
      * Get some HTMLElement(s) and
@@ -154,20 +101,6 @@ export default class DOM extends Base<HTMLElement> {
     get(query: NodeList): DOM;
     get(query: ParentNode): DOM;
     get(query: Window | Document): DOM;
-    get(query: any): DOM {
-        if (!query) return this;
-        if (typeof query === "string") return getElement(query, this);
-        if (query instanceof DOM) return query;
-
-        if (isNode(query)) {
-            this.push(query);
-        } else if (query instanceof NodeList) {
-            if (query.length === 0) return this;
-            query.forEach((node) => this.push(node));
-        }
-
-        return this;
-    }
 
     /**
      * Get some HTMLElement(s) that are parent for current element
@@ -178,29 +111,8 @@ export default class DOM extends Base<HTMLElement> {
     getParents(query: DOM): DOM;
     getParents(query: DOM.kindOfNode): DOM;
     getParents(query: NodeList): DOM;
-    getParents(query: any): DOM {
-        const setParent = (elm: DOM) => DOM.get(elm.parent);
-        const isPeek = (elm: DOM) => {
-            let { isEmpty, first } = elm;
-            return !isEmpty && first && !(first instanceof Document);
-        };
 
-        let elem: DOM = this,
-            parents = setParent(elem);
-
-        for (; isPeek(elem); elem = setParent(elem)) {
-            if (query) {
-                if (elem.matches(query)) parents = elem;
-                continue;
-            }
-            parents.unshift(elem.first);
-        }
-        return parents;
-    }
-
-    init(): DOM {
-        return this;
-    }
+    init(): DOM;
 
     /**
      * Insert an element into current element
@@ -211,17 +123,6 @@ export default class DOM extends Base<HTMLElement> {
     insert(query: DOM): DOM;
     insert(query: DOM.kindOfNode): DOM;
     insert(query: DOM.elementOptions): DOM;
-    insert(query: any): DOM {
-        const { first: elm } = ((e, fn) => {
-            if (e instanceof DOM) return e;
-            if (typeof e === "object") return fn.create(e);
-            return fn.get(e).isEmpty ? fn.create(e) : fn.get(e);
-        })(query, DOM);
-
-        if (elm) this.first?.appendChild(elm);
-
-        return this;
-    }
 
     /**
      * Insert current element after target element
@@ -231,14 +132,6 @@ export default class DOM extends Base<HTMLElement> {
     insertAfter(target: string): DOM;
     insertAfter(target: DOM): DOM;
     insertAfter(target: DOM.kindOfNode): DOM;
-    insertAfter(target: any): DOM {
-        const { parent, nextSibling } = DOM.get(target);
-
-        if (!this.first || !nextSibling) return this;
-
-        parent?.insertBefore(this.first, nextSibling);
-        return this;
-    }
 
     /**
      * Insert current element into first child of target element
@@ -249,23 +142,6 @@ export default class DOM extends Base<HTMLElement> {
     insertBefore(target: string, prepend?: boolean): DOM;
     insertBefore(target: DOM, prepend?: boolean): DOM;
     insertBefore(target: DOM.kindOfNode, prepend?: boolean): DOM;
-    insertBefore(target: any, prepend: boolean = false): DOM {
-        const { first, parent, childNodes } = DOM.get(target);
-
-        if (!this.first) return this;
-
-        if (!prepend && first) {
-            parent?.insertBefore(this.first, first);
-        } else {
-            if (childNodes && childNodes.length) {
-                first?.insertBefore(this.first, childNodes[0]);
-            } else {
-                this.insertTo(target);
-            }
-        }
-
-        return this;
-    }
 
     /**
      * Insert current element into target element
@@ -274,10 +150,6 @@ export default class DOM extends Base<HTMLElement> {
     insertTo(target: string): DOM;
     insertTo(target: DOM): DOM;
     insertTo(target: DOM.kindOfNode): DOM;
-    insertTo(target: any): DOM {
-        if (this.first) DOM.getFirst(target)?.appendChild(this.first);
-        return this;
-    }
 
     /**
      * Is current element matches with given query?
@@ -286,14 +158,6 @@ export default class DOM extends Base<HTMLElement> {
     matches(query: DOM): boolean;
     matches(query: DOM.kindOfNode): boolean;
     matches(query: NodeList): boolean;
-    matches(query: any): boolean {
-        let elms = DOM.get(query),
-            { length: i } = elms;
-
-        if (elms.isEmpty) return false;
-        while (--i >= 0 && elms.at(i) !== this.first) {}
-        return i > -1;
-    }
 
     /**
      * Remove current element from body
@@ -306,15 +170,6 @@ export default class DOM extends Base<HTMLElement> {
     remove(query: string): DOM;
     remove(query: DOM.kindOfNode): DOM;
     remove(query: DOM): DOM;
-    remove(query?: any) {
-        let ele: HTMLElement | undefined = query ? DOM.getFirst(query) : this.first;
-
-        if (ele) {
-            query ? this.first?.removeChild(ele) : DOM.getFirst("body")?.removeChild(ele);
-        }
-
-        return this;
-    }
 
     /**
      * Replace target element with current element
@@ -323,14 +178,6 @@ export default class DOM extends Base<HTMLElement> {
     replace(target: string): DOM;
     replace(target: DOM): DOM;
     replace(target: DOM.kindOfNode): DOM;
-    replace(target: any): DOM {
-        const { parent, first } = DOM.get(target);
-        if (!this.first || !first) return this;
-
-        parent?.replaceChild(this.first, first);
-
-        return this;
-    }
 
     /**
      * Add event listener to an element
@@ -338,10 +185,7 @@ export default class DOM extends Base<HTMLElement> {
      * @param listener event listener
      * @param bubbles bubbling
      */
-    onEvent(type: string, listener: EventListener, bubbles: boolean = false) {
-        (this.first || window).addEventListener(type, listener, bubbles);
-        return this;
-    }
+    onEvent(type: string, listener: EventListener, bubbles?: boolean): DOM;
 
     /**
      * Added since `v0.2.x`.
@@ -349,13 +193,7 @@ export default class DOM extends Base<HTMLElement> {
      * Dispatch Event manualy to the current event
      * @param {Event} event
      */
-    dispatch(event: Event) {
-        if (this.first) {
-            this.first.dispatchEvent(event);
-        }
-
-        return this;
-    }
+    dispatch(event: Event): DOM;
 
     /**
      * Set single properties. Can be attributes or stylesheet
@@ -364,30 +202,13 @@ export default class DOM extends Base<HTMLElement> {
      */
     set(key: { [k: string]: string | number | boolean }): DOM;
     set(key: string, value: string | number | boolean): DOM;
-    set(key: any, value?: any): DOM {
-        if (typeof key === "object") {
-            for (let name in key) {
-                this.set(name, key[name]);
-            }
-            return this;
-        }
 
-        if (this.isEmpty) return this;
-
-        const [isStyleKey, props] = ((k, v) => {
-            if (!this.first) return [false, undefined];
-            let keys = Object.getOwnPropertyNames(this.first.style);
-            return [
-                keys.some((e) => e === k),
-                { [k]: v } as DOM.elementStyles | DOM.elementOptions,
-            ];
-        })(toCamel(key), value);
-
-        if (!props) return this;
-        return isStyleKey
-            ? setStyles(props as DOM.elementStyles, this)
-            : setProperties(props as DOM.elementOptions, this);
-    }
+    /**
+     * Static method for creating and inserting new stylesheet into active page
+     * @param css stylesheet
+     * @param props other html attributes
+     */
+    static addStyle(css: string, props?: DOM.elementOptions): DOM;
 
     /**
      * Static method for creating new DOM instance with new Element(s)
@@ -395,6 +216,7 @@ export default class DOM extends Base<HTMLElement> {
      */
     static create(query: DOM): DOM;
     static create(query: DOM.elementOptions | DOM.elementOptions[]): DOM;
+    static create(query: string | string[]): DOM;
     /**
      * Static method for creating new DOM instance with new Element(s)
      * @param query
@@ -405,62 +227,15 @@ export default class DOM extends Base<HTMLElement> {
         query: string | DOM | DOM.elementOptions | DOM.elementOptions[],
         opt?: DOM.elementOptions | DOM.elementOptions[]
     ): DOM;
-    static create(query: any, opt?: any) {
-        if (query instanceof DOM) return query;
-
-        const props = (tag?: string | DOM.elementOptions, opt?: DOM.elementOptions) => {
-            return Object.assign(
-                {},
-                !!tag ? (typeof tag == "string" ? { tag } : tag) : { tag: "div" },
-                opt
-            ) as DOM.elementOptions;
-        };
-
-        if (Array.isArray(query)) {
-            query.map((e) => {
-                let { tag: t, ...prop } = e;
-                return !!prop
-                    ? props(t, props(prop, opt as DOM.elementOptions))
-                    : props(e, opt as DOM.elementOptions);
-            });
-            return new DOM(_token, query, true);
-        }
-        return new DOM(_token, props(query, opt as DOM.elementOptions), true);
-    }
 
     /**
-     * Static method for creating new DOM instance with matched Element(s)
-     * @param query
+     * Create an svg element
+     * @param shape SVG Shape(s), can be object or array of object
+     * @param attr main SVG attributes if any
+     * @return
      */
-    static get(query: string): DOM;
-    static get(query: DOM): DOM;
-    static get(query: DOM.kindOfNode): DOM;
-    static get(query: ParentNode | null | undefined): DOM;
-    static get(query: DOM.kindOfNode | NodeList): DOM;
-    static get(query: DOM.kindOfNode | string): DOM;
-    static get(query: DOM.kindOfNode | DOM): DOM;
-    static get(query: string | DOM.kindOfNode | DOM): DOM;
-    static get(query: any): DOM {
-        if (query instanceof DOM) return query;
-        return new DOM(_token, query);
-    }
-
-    /**
-     * Static method for creating new DOM instance and get the first element if any
-     * @param query
-     */
-    static getFirst(query: string | DOM.kindOfNode): HTMLElement | undefined;
-    static getFirst(query: string | DOM.kindOfNode | DOM): HTMLElement | undefined;
-    static getFirst(query: any): HTMLElement | undefined {
-        return DOM.get(query)?.first;
-    }
-
-    /**
-     * Static method for creating new DOM instance with no element inside
-     */
-    static init(): DOM {
-        return new DOM(_token).init();
-    }
+    static createIcon(shape: DOM.svgElementDetails, attr?: SVGSVGElement): DOM;
+    static createIcon(shape: DOM.svgElementDetails[], attr?: SVGSVGElement): DOM;
 
     /**
      * Static method for creating new DOM instance with new Element(s)
@@ -475,61 +250,26 @@ export default class DOM extends Base<HTMLElement> {
         type?: string,
         opt?: DOM.elementOptions
     ): DOM;
-    static createList(items: any[], type: string = "ol", opt?: DOM.elementOptions): DOM {
-        let Lists = DOM.create(type, opt);
-        if (Array.isArray(items)) {
-            items.forEach((e) => {
-                if (typeof e === "string") {
-                    Lists.insert({ tag: "li", html: e });
-                } else {
-                    let { title, type, content } = e,
-                        item = DOM.create("li", { html: title });
-
-                    if (Array.isArray(content)) {
-                        DOM.createList(content, type || "ol").insertTo(item);
-                    }
-                    Lists.insert(item);
-                }
-            });
-        }
-        return Lists;
-    }
 
     /**
-     * Create an svg element
-     * @param shape SVG Shape(s), can be object or array of object
-     * @param attr main SVG attributes if any
-     * @return
+     * Static method for creating new DOM instance with matched Element(s)
+     * @param query
      */
-    static createIcon(shape: DOM.svgElementDetails, attr?: SVGSVGElement): DOM;
-    static createIcon(shape: DOM.svgElementDetails[], attr?: SVGSVGElement): DOM;
-    static createIcon(shape: any, attr?: SVGSVGElement): DOM {
-        const checkOpt = (opt: any) => {
-            const deconstructSize = (size: string) => {
-                return size.split(" ").length == 1 ? [size, size] : size.split(" ");
-            };
-            let newOpt: { [k: string]: string } = {};
-            for (const key in opt) {
-                if (key !== "size") {
-                    newOpt[key] = opt[key];
-                } else {
-                    let [width, height] = deconstructSize(opt[key]);
-                    Object.assign(newOpt, { width, height });
-                }
-            }
-            return newOpt;
-        };
+    static get(query: string): DOM;
+    static get(query: DOM): DOM;
+    static get(query: DOM.kindOfNode): DOM;
+    static get(query: ParentNode | null | undefined): DOM;
+    static get(query: DOM.kindOfNode | NodeList): DOM;
+    static get(query: DOM.kindOfNode | string): DOM;
+    static get(query: DOM.kindOfNode | DOM): DOM;
+    static get(query: string | DOM.kindOfNode | DOM): DOM;
 
-        const namespace = "http://www.w3.org/2000/svg",
-            svgDOM = DOM.create("svg", { namespace, ...checkOpt(attr) }),
-            shapes = Array.isArray(shape) ? shape : [shape];
-
-        shapes.forEach(({ type: tag, data }) => {
-            svgDOM.insert({ tag, namespace, ...checkOpt(data) });
-        });
-
-        return svgDOM;
-    }
+    /**
+     * Static method for creating new DOM instance and get the first element if any
+     * @param query
+     */
+    static getFirst(query: string | DOM.kindOfNode): HTMLElement | undefined;
+    static getFirst(query: string | DOM.kindOfNode | DOM): HTMLElement | undefined;
 
     /**
      * Static method for checking for existing Element
@@ -544,31 +284,39 @@ export default class DOM extends Base<HTMLElement> {
     ): Promise<HTMLElement | false>;
     static has(query: DOM.kindOfNode | NodeList, timeout?: number): Promise<HTMLElement | false>;
     static has(query: DOM.kindOfNode | DOM, timeout?: number): Promise<HTMLElement | false>;
-    static has(query: any, timeout: number = 10): Promise<HTMLElement | false> {
-        return new Promise((done) => {
-            let loop = setInterval(() => {
-                let first = DOM.getFirst(query);
-                if (first) {
-                    done(first);
-                    clearInterval(loop);
-                }
-                if ((timeout -= 1) == 0) {
-                    done(false);
-                    clearInterval(loop);
-                }
-            }, 1e3);
-        });
-    }
 
     /**
-     * Static method for creating and inserting new stylesheet into active page
-     * @param css stylesheet
-     * @param props other html attributes
+     * Static method for creating new DOM instance with no element inside
      */
-    static addStyle(css: string, props?: DOM.elementOptions) {
-        let opt = { tag: "style", html: css, append: "head" },
-            query = Object.assign({}, opt, props);
-
-        return DOM.create(query);
-    }
+    static init(): DOM;
 }
+
+function DOM(): DOM;
+function DOM(...args: any[]): DOM;
+function DOM(this: DOM | undefined | any, ...args: any[]) {
+    if (!this || !(this instanceof DOM)) {
+        if (args.length >= 1) {
+            let [query, create] = args;
+            return typeof create === "boolean" && create ? DOM.create(query) : DOM.get(query);
+        }
+        return DOM.init();
+    }
+
+    const [token, query, create] = args as [symbol, any, boolean];
+
+    if (_token !== token) {
+        throw new TypeError(
+            "DOM is not constructable. " +
+                "Use DOM.create(), DOM.createList(), DOM.createIcon(), " +
+                "DOM.get(), DOM.has(), DOM.addStyle(), DOM.init() or DOM()."
+        );
+    }
+
+    return query ? (create ? this.create(query) : this.get(query)) : this.init();
+}
+
+Object.setPrototypeOf(DOM.prototype, Base.prototype);
+Object.defineProperties(DOM.prototype, _proto_);
+Object.defineProperties(DOM, _static_);
+
+export default DOM;
