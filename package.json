@@ -2,7 +2,7 @@
   "name": "@wayfu/wayfu-dom",
   "version": "0.2.0",
   "description": "WayFu DOM Manipulator",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "dev": "webpack --config webpack.config.js --mode=development -w",
     "build": "webpack --config webpack.config.js --mode=production",
