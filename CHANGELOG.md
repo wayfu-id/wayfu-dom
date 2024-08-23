@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/wayfu-id/wayfu-dom/compare/v0.2.0...v0.2.1) (2024-08-23)
+
+
+### Bug Fixes
+
+* **build:** Fix build for NPM Package ([afa3f2c](https://github.com/wayfu-id/wayfu-dom/commit/afa3f2c1f0a734fd693c6ff193b0ba52f40b3556))
+
 ## [0.2.0](https://github.com/wayfu-id/wayfu-dom/compare/v0.1.15...v0.2.0) (2024-07-27)
 
 
